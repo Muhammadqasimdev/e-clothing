@@ -5,7 +5,6 @@ import fs from 'fs';
 
 const router = Router();
 
-// Configure multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, '../uploads');
@@ -33,11 +32,10 @@ const upload = multer({
     }
   },
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 5 * 1024 * 1024,
   },
 });
 
-// Upload image
 router.post('/upload', upload.single('image') as any, (req, res) => {
   try {
     if (!req.file) {
@@ -52,12 +50,10 @@ router.post('/upload', upload.single('image') as any, (req, res) => {
       filename: req.file.filename,
     });
   } catch (error) {
-    console.error('Error uploading image:', error);
     return res.status(500).json({ error: 'Failed to upload image' });
   }
 });
 
-// Delete image
 router.delete('/upload/:filename', (req, res) => {
   try {
     const { filename } = req.params;
@@ -70,7 +66,6 @@ router.delete('/upload/:filename', (req, res) => {
       return res.status(404).json({ error: 'Image not found' });
     }
   } catch (error) {
-    console.error('Error deleting image:', error);
     return res.status(500).json({ error: 'Failed to delete image' });
   }
 });

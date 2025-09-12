@@ -15,7 +15,6 @@ export class OrderService {
     this.exchangeRateService = new ExchangeRateService();
   }
 
-  // Base prices in CAD
   private readonly BASE_PRICES = {
     tshirt: {
       'light-cotton': {
@@ -25,10 +24,10 @@ export class OrderService {
         red: 18.95,
       },
       'heavy-cotton': {
-        black: 19.95, // 16.95 + 3
-        white: 19.95, // 16.95 + 3
-        green: 21.95, // 18.95 + 3
-        red: 21.95, // 18.95 + 3
+        black: 19.95,
+        white: 19.95,
+        green: 21.95,
+        red: 21.95,
       },
     },
     sweater: {
@@ -39,8 +38,8 @@ export class OrderService {
     },
   };
 
-  private readonly TEXT_PRICE = 5; // $5 for text over 8 characters
-  private readonly IMAGE_PRICE = 10; // $10 for image
+  private readonly TEXT_PRICE = 5;
+  private readonly IMAGE_PRICE = 10;
 
   createOrder(request: CreateOrderRequest): Order {
     const id = this.generateId();
@@ -84,13 +83,11 @@ export class OrderService {
       return null;
     }
 
-    // Update fields
     if (request.material !== undefined) order.material = request.material;
     if (request.color !== undefined) order.color = request.color;
     if (request.customText !== undefined) order.customText = request.customText;
     if (request.imageUrl !== undefined) order.imageUrl = request.imageUrl;
 
-    // Recalculate prices
     order.basePrice = this.calculateBasePrice(
       order.productType,
       order.material,

@@ -6,7 +6,6 @@ import { routes } from './routes';
 
 export const app = express();
 
-// Middleware
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -37,7 +36,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (uploaded images) with CORS headers
 app.use(
   '/uploads',
   (req, res, next) => {
@@ -53,27 +51,16 @@ app.use(
   express.static(path.join(__dirname, 'uploads'))
 );
 
-// Routes
 app.use('/api', routes);
 
-// Debug: Log all registered routes
-console.log('Registered routes:');
-console.log('GET /health');
-console.log('POST /api/orders');
-console.log('GET /api/orders');
-console.log('GET /api/exchange-rates');
-
-// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Error handler
 app.use(
   (
     err: any,
@@ -81,7 +68,6 @@ app.use(
     res: express.Response,
     next: express.NextFunction
   ) => {
-    console.error(err.stack);
     res.status(500).json({ message: 'Something went wrong!' });
   }
 );

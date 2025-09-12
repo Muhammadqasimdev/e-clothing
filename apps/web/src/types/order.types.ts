@@ -7,8 +7,8 @@ export interface Order {
   imageUrl?: string;
   basePrice: number;
   totalPrice: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateOrderRequest {
@@ -36,4 +36,15 @@ export interface PriceInCurrencies {
   CAD: number;
   USD: number;
   EUR: number;
+}
+
+export interface OrderWithPrices {
+  order: Order;
+  priceInCurrencies: PriceInCurrencies;
+}
+
+export interface ImageUploadResponse {
+  success: boolean;
+  imageUrl: string;
+  filename: string;
 }

@@ -12,28 +12,27 @@ export class OrderController {
   async createOrder(req: Request, res: Response): Promise<void> {
     try {
       const orderData: CreateOrderRequest = req.body;
-      
-      // Validate required fields
+
       if (!orderData.productType || !orderData.color) {
         res.status(400).json({ error: 'productType and color are required' });
         return;
       }
 
-      // Validate product type specific requirements
       if (orderData.productType === 'tshirt' && !orderData.material) {
         res.status(400).json({ error: 'material is required for t-shirts' });
         return;
       }
 
       const order = this.orderService.createOrder(orderData);
-      const priceInCurrencies = await this.orderService.getPriceInCurrencies(order.totalPrice);
+      const priceInCurrencies = await this.orderService.getPriceInCurrencies(
+        order.totalPrice
+      );
 
       res.status(201).json({
         order,
-        priceInCurrencies
+        priceInCurrencies,
       });
     } catch (error) {
-      console.error('Error creating order:', error);
       res.status(500).json({ error: 'Failed to create order' });
     }
   }
@@ -48,14 +47,15 @@ export class OrderController {
         return;
       }
 
-      const priceInCurrencies = await this.orderService.getPriceInCurrencies(order.totalPrice);
+      const priceInCurrencies = await this.orderService.getPriceInCurrencies(
+        order.totalPrice
+      );
 
       res.json({
         order,
-        priceInCurrencies
+        priceInCurrencies,
       });
     } catch (error) {
-      console.error('Error getting order:', error);
       res.status(500).json({ error: 'Failed to get order' });
     }
   }
@@ -64,15 +64,15 @@ export class OrderController {
     try {
       const orders = this.orderService.getAllOrders();
       const ordersWithPrices = await Promise.all(
-        orders.map(async (order) => {
-          const priceInCurrencies = await this.orderService.getPriceInCurrencies(order.totalPrice);
+        orders.map(async order => {
+          const priceInCurrencies =
+            await this.orderService.getPriceInCurrencies(order.totalPrice);
           return { order, priceInCurrencies };
         })
       );
 
       res.json(ordersWithPrices);
     } catch (error) {
-      console.error('Error getting orders:', error);
       res.status(500).json({ error: 'Failed to get orders' });
     }
   }
@@ -89,14 +89,15 @@ export class OrderController {
         return;
       }
 
-      const priceInCurrencies = await this.orderService.getPriceInCurrencies(order.totalPrice);
+      const priceInCurrencies = await this.orderService.getPriceInCurrencies(
+        order.totalPrice
+      );
 
       res.json({
         order,
-        priceInCurrencies
+        priceInCurrencies,
       });
     } catch (error) {
-      console.error('Error updating order:', error);
       res.status(500).json({ error: 'Failed to update order' });
     }
   }
@@ -113,7 +114,6 @@ export class OrderController {
 
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting order:', error);
       res.status(500).json({ error: 'Failed to delete order' });
     }
   }
@@ -123,7 +123,6 @@ export class OrderController {
       const rates = await this.orderService.getExchangeRates();
       res.json(rates);
     } catch (error) {
-      console.error('Error getting exchange rates:', error);
       res.status(500).json({ error: 'Failed to get exchange rates' });
     }
   }
