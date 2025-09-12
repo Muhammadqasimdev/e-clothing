@@ -4,10 +4,9 @@ export class ExchangeRateService {
   private readonly API_KEY = '56979d1a5fbca8521a5de76a6691a6ae';
   private readonly BASE_URL = 'https://api.exchangeratesapi.io/v1/latest';
   private cache: { rates: ExchangeRates; timestamp: number } | null = null;
-  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private readonly CACHE_DURATION = 5 * 60 * 1000;
 
   async getExchangeRates(): Promise<ExchangeRates> {
-    // Check cache first
     if (this.cache && Date.now() - this.cache.timestamp < this.CACHE_DURATION) {
       return this.cache.rates;
     }
@@ -28,12 +27,11 @@ export class ExchangeRateService {
       }
 
       const rates: ExchangeRates = {
-        CAD: 1.0, // Base currency
+        CAD: 1.0,
         USD: data.rates.USD,
         EUR: data.rates.EUR,
       };
 
-      // Cache the result
       this.cache = {
         rates,
         timestamp: Date.now(),
@@ -41,17 +39,15 @@ export class ExchangeRateService {
 
       return rates;
     } catch (error) {
-      console.warn('Failed to fetch exchange rates, using fallback:', error);
       return this.getFallbackRates();
     }
   }
 
   private getFallbackRates(): ExchangeRates {
-    // Fallback rates (approximate values)
     return {
       CAD: 1.0,
-      USD: 0.74, // 1 CAD = 0.74 USD
-      EUR: 0.68, // 1 CAD = 0.68 EUR
+      USD: 0.74,
+      EUR: 0.68,
     };
   }
 }
