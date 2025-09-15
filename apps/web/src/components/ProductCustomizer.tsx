@@ -6,8 +6,8 @@ import {
   OrderWithPrices,
   ExchangeRates,
 } from '../types/order.types';
-import { ProductPreview } from './ProductPreview.tsx';
-import { PriceDisplay } from './PriceDisplay.tsx';
+import { ProductPreview } from './ProductPreview';
+import { PriceDisplay } from './PriceDisplay';
 
 export const ProductCustomizer: React.FC = () => {
   const [productType, setProductType] = useState<'tshirt' | 'sweater'>(
@@ -59,6 +59,10 @@ export const ProductCustomizer: React.FC = () => {
     if (acceptedFiles.length === 0) return;
 
     const file = acceptedFiles[0];
+    await handleFileUpload(file);
+  };
+
+  const handleFileUpload = async (file: File) => {
     setIsUploadingImage(true);
     setError(null);
 
@@ -283,6 +287,7 @@ export const ProductCustomizer: React.FC = () => {
                 onChange={e => setCustomText(e.target.value)}
                 maxLength={16}
                 placeholder="Enter your custom text..."
+                data-testid="custom-text-input"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <div className="text-sm text-gray-500 mt-1">
@@ -310,7 +315,18 @@ export const ProductCustomizer: React.FC = () => {
                     : 'border-gray-300 hover:border-gray-400'
               }`}
             >
-              <input {...getInputProps()} disabled={isUploadingImage} />
+              <input 
+                {...getInputProps()} 
+                disabled={isUploadingImage} 
+                type="file" 
+                data-testid="file-input"
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0) {
+                    handleFileUpload(files[0]);
+                  }
+                }}
+              />
               {isUploadingImage ? (
                 <div>
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-2"></div>
@@ -387,7 +403,7 @@ export const ProductCustomizer: React.FC = () => {
               <div className="border-t pt-1 font-medium">
                 <div className="flex justify-between">
                   <span>Total:</span>
-                  <span>${totalPrice.toFixed(2)} CAD</span>
+                  <span data-testid="total-price">${totalPrice.toFixed(2)} CAD</span>
                 </div>
               </div>
             </div>

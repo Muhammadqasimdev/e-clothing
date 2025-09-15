@@ -1,0 +1,36 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "target": "es2020",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["vitest/globals", "node"]
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.tsx",
+    "tests/**/*.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
