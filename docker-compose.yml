@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000' # Web app
+      - '4200:4200' # API
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: yarn start:all
+    stdin_open: true
+    tty: true
